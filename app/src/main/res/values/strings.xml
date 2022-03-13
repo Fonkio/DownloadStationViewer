@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DownloadStationViewer</string>
+    <string name="titleLogin">Se connecter</string>
+    <string name="addressServer">Adresse du serveur</string>
+    <string name="password">Mot de passe</string>
+    <string name="username">Nom d\'utilisateur</string>
+</resources>
