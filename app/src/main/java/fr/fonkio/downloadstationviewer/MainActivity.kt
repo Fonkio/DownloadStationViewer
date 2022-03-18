@@ -6,13 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import fr.fonkio.downloadstationviewer.api.DownloadListActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences("ID", Context.MODE_PRIVATE)
 
         if (sharedPref.getBoolean("connectionAuto", false)) {
             gotoDownloadListActivity()
@@ -26,12 +25,13 @@ class MainActivity : AppCompatActivity() {
         val editTextUsername = findViewById<EditText>(R.id.editTextUsername)
         val editTextPassword = findViewById<EditText>(R.id.editTextPassword)
 
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences("ID", Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
 
         editor.putString("ip", editTextIp.text.toString())
         editor.putString("username", editTextUsername.text.toString())
         editor.putString("password", editTextPassword.text.toString())
+        editor.putBoolean("connectionAuto", true)
         editor.apply()
 
         gotoDownloadListActivity()

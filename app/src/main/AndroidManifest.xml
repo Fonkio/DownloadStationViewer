@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DownloadStationViewer">
         <activity
-            android:name=".api.DownloadListActivity"
+            android:name=".DownloadListActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
