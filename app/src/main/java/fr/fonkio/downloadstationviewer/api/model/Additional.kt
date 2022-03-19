@@ -1,4 +1,4 @@
-package fr.fonkio.downloadstationviewer.model
+package fr.fonkio.downloadstationviewer.api.model
 
 data class Additional(
     val detail: Detail,

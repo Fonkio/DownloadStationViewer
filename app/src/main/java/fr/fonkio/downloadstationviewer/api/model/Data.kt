@@ -1,4 +1,4 @@
-package fr.fonkio.downloadstationviewer.model
+package fr.fonkio.downloadstationviewer.api.model
 
 data class Data(
     val offset: Int,
@@ -9,5 +9,7 @@ data class Data(
     val ik_message: String,
     val is_portal_port: String,
     val sid: String,
-    val synotoken: String
+    val synotoken: String,
+    val error: Int,
+    val id: String
 )

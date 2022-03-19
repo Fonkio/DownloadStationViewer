@@ -4,4 +4,13 @@
     <string name="addressServer">Adresse du serveur</string>
     <string name="password">Mot de passe</string>
     <string name="username">Nom d\'utilisateur</string>
+    <string name="by">par</string>
+    <string name="slash">/</string>
+    <string name="refreched">Liste mise à jour</string>
+    <string name="pause">Pause</string>
+    <string name="play">Relancer</string>
+    <string name="percentUnit">%</string>
+    <string name="delete">Supprimer</string>
+    <string name="disconnect">Se déconnecter</string>
+    <string name="refresh">Rafraichir</string>
 </resources>
