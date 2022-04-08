@@ -4,12 +4,17 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import android.widget.ToggleButton
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.fonkio.downloadstationviewer.adapter.Download
 import fr.fonkio.downloadstationviewer.adapter.DownloadAdapter
@@ -17,13 +22,19 @@ import fr.fonkio.downloadstationviewer.R
 import fr.fonkio.downloadstationviewer.api.DownloadService
 import fr.fonkio.downloadstationviewer.api.ServiceBuilder
 import fr.fonkio.downloadstationviewer.api.model.APISingleResponse
+import fr.fonkio.downloadstationviewer.runnable.UpdateRunnable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class DownloadListActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView : RecyclerView
+    lateinit var recyclerView : RecyclerView
+    private lateinit var tbFinished : ToggleButton
+    private lateinit var tbDownloading : ToggleButton
+    private lateinit var tbPaused : ToggleButton
+    private lateinit var tbSeeding : ToggleButton
+    private lateinit var tvEmptyList : TextView
     private lateinit var sb : ServiceBuilder
     private val downloadList = mutableListOf<Download>()
     private var sid : String? = null
@@ -32,6 +43,12 @@ class DownloadListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_download_list)
         recyclerView = findViewById(R.id.recyclerView)
+        tbFinished = findViewById(R.id.toggleButtonFinished)
+        tbDownloading = findViewById(R.id.toggleButtonDownloading)
+        tbPaused = findViewById(R.id.toggleButtonPause)
+        tbSeeding = findViewById(R.id.toggleButtonSeeding)
+        tvEmptyList = findViewById(R.id.textViewEmptyList)
+        Handler(Looper.getMainLooper()).postDelayed(UpdateRunnable(this),2000)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -89,6 +106,16 @@ class DownloadListActivity : AppCompatActivity() {
         Toast.makeText(this, R.string.refreched, Toast.LENGTH_SHORT).show()
     }
 
+    fun filterClicked(v: View) {
+        val tb = v as ToggleButton
+        tbFinished.isChecked = false
+        tbSeeding.isChecked = false
+        tbPaused.isChecked = false
+        tbDownloading.isChecked = false
+        tb.isChecked = true
+        loadList()
+    }
+
     private fun loadDownload(sid: String) {
         //initiate the service
 
@@ -100,6 +127,7 @@ class DownloadListActivity : AppCompatActivity() {
                 Log.d("Response", "onResponse: ${response.body()}")
                 if (response.isSuccessful){
                     val responseDownload  = response.body()!!
+                    val downloadListNoFiltered = mutableListOf<Download>()
                     for(task in responseDownload.data.tasks) {
                         val download = Download(
                             task.id,
@@ -126,14 +154,26 @@ class DownloadListActivity : AppCompatActivity() {
                             task.additional.transfer.speed_download,
                             task.additional.transfer.speed_upload
                         )
-                        downloadList.add(download)
+                        downloadListNoFiltered.add(download)
+                    }
+                    downloadList.addAll(downloadListNoFiltered.filter { download -> when (download.status) {
+                        "finished" -> tbFinished.isChecked
+                        "seeding" -> tbSeeding.isChecked
+                        "downloading" -> tbDownloading.isChecked
+                        "paused" -> tbPaused.isChecked
+                        else -> true
+                    } })
+                    tvEmptyList.visibility = if (downloadList.size == 0) View.VISIBLE else View.GONE
+                    if (recyclerView.adapter == null) {
+                        recyclerView.apply {
+                            setHasFixedSize(true)
+                            layoutManager = LinearLayoutManager (this@DownloadListActivity)
+                            adapter = DownloadAdapter(downloadList, sb, sid, this@DownloadListActivity)
+                        }
+                    } else {
+                        recyclerView.adapter!!.notifyDataSetChanged()
+                    }
 
-                    }
-                    recyclerView.apply {
-                        setHasFixedSize(true)
-                        layoutManager = GridLayoutManager(this@DownloadListActivity,1)
-                        adapter = DownloadAdapter(downloadList, sb, sid, this@DownloadListActivity)
-                    }
                 }else{
                     Toast.makeText(this@DownloadListActivity, "Something went wrong ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
@@ -194,6 +234,4 @@ class DownloadListActivity : AppCompatActivity() {
             }
         })
     }
-
-
 }

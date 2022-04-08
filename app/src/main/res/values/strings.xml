@@ -13,4 +13,9 @@
     <string name="delete">Supprimer</string>
     <string name="disconnect">Se déconnecter</string>
     <string name="refresh">Rafraichir</string>
+    <string name="Downloading">Téléchargement</string>
+    <string name="Seeding">Seeding</string>
+    <string name="Finished">Terminé</string>
+    <string name="Pause">Pause</string>
+    <string name="emptyList">La liste est vide</string>
 </resources>
