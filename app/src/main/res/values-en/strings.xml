@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DownloadStationViewer</string>
+    <string name="titleLogin">Login</string>
+    <string name="addressServer">Server address + port</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="by">by</string>
+    <string name="slash">/</string>
+    <string name="refreched">List updated</string>
+    <string name="pause">Pause</string>
+    <string name="play">Play</string>
+    <string name="percentUnit">%</string>
+    <string name="delete">Delete</string>
+    <string name="disconnect">Logout</string>
+    <string name="refresh">Refresh</string>
+    <string name="Downloading">Downloading</string>
+    <string name="Seeding">Seeding</string>
+    <string name="Finished">Done</string>
+    <string name="Pause">Paused</string>
+    <string name="emptyList">List is empty</string>
+</resources>
