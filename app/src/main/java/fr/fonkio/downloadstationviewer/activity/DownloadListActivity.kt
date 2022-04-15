@@ -89,7 +89,6 @@ class DownloadListActivity : AppCompatActivity() {
     }
 
     fun loadList() {
-        downloadList.removeAll(downloadList)
         val sidNow = sid
         if (sidNow != null) {
             loadDownload(sidNow)
@@ -156,13 +155,15 @@ class DownloadListActivity : AppCompatActivity() {
                         )
                         downloadListNoFiltered.add(download)
                     }
-                    downloadList.addAll(downloadListNoFiltered.filter { download -> when (download.status) {
+                    val downloadListFiltered = downloadListNoFiltered.filter { download -> when (download.status) {
                         "finished" -> tbFinished.isChecked
                         "seeding" -> tbSeeding.isChecked
                         "downloading" -> tbDownloading.isChecked
                         "paused" -> tbPaused.isChecked
                         else -> true
-                    } })
+                    } }
+                    downloadList.removeAll(downloadList)
+                    downloadList.addAll(downloadListFiltered)
                     tvEmptyList.visibility = if (downloadList.size == 0) View.VISIBLE else View.GONE
                     if (recyclerView.adapter == null) {
                         recyclerView.apply {

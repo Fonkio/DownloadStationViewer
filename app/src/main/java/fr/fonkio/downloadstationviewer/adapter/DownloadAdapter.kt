@@ -13,14 +13,13 @@ import fr.fonkio.downloadstationviewer.activity.DownloadListActivity
 import fr.fonkio.downloadstationviewer.api.DownloadService
 import fr.fonkio.downloadstationviewer.api.ServiceBuilder
 import fr.fonkio.downloadstationviewer.api.model.APIMultiResponses
-import fr.fonkio.downloadstationviewer.api.model.APISingleResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
-class DownloadAdapter(private val downloadList: List<Download>, private val sb: ServiceBuilder, val sid : String, val downloadListActivity: DownloadListActivity) : RecyclerView.Adapter<DownloadAdapter.ViewHolder>(){
+class DownloadAdapter(private val downloadList: List<Download>, private val sb: ServiceBuilder, private val sid : String, private val downloadListActivity: DownloadListActivity) : RecyclerView.Adapter<DownloadAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view  = LayoutInflater.from(parent.context).inflate(R.layout.item_download, parent,false)
@@ -33,30 +32,30 @@ class DownloadAdapter(private val downloadList: List<Download>, private val sb: 
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.d("Response", "List Count :${downloadList.size} ")
+        Log.d("Response", "List Count :${downloadList.size}, $position")
 
 
         return holder.bind(downloadList[position])
 
     }
 
-    class ViewHolder(itemView: View, private val sb: ServiceBuilder, val sid : String, val downloadListActivity: DownloadListActivity) :RecyclerView.ViewHolder(itemView) {
-        val tvTitle = itemView.findViewById<TextView>(R.id.textViewTitle)
-        val tvUsername = itemView.findViewById<TextView>(R.id.textViewUsername)
-        val tvStatus = itemView.findViewById<TextView>(R.id.textViewStatus)
-        val tvSizeDownloaded = itemView.findViewById<TextView>(R.id.textViewSizeDownloaded)
-        val tvSizeUploaded = itemView.findViewById<TextView>(R.id.textViewSizeUpload)
-        val tvSize = itemView.findViewById<TextView>(R.id.textViewSize)
-        val tvUnit = itemView.findViewById<TextView>(R.id.textViewSizeUnit)
-        val tvPercentage = itemView.findViewById<TextView>(R.id.textViewPercentage)
-        val tvSpeedDownload = itemView.findViewById<TextView>(R.id.textViewSpeedDownload)
-        val tvSpeedUpload = itemView.findViewById<TextView>(R.id.textViewSpeedUpload)
-        val tvSpeedUnit = itemView.findViewById<TextView>(R.id.textViewSpeedUnit)
-        val bPlay = itemView.findViewById<ImageButton>(R.id.buttonPlay)
-        val bPause = itemView.findViewById<ImageButton>(R.id.buttonPause)
-        val bDelete = itemView.findViewById<ImageButton>(R.id.buttonDelete)
+    class ViewHolder(itemView: View, private val sb: ServiceBuilder, private val sid : String, val downloadListActivity: DownloadListActivity) :RecyclerView.ViewHolder(itemView) {
+        private val tvTitle: TextView = itemView.findViewById(R.id.textViewTitle)
+        private val tvUsername: TextView = itemView.findViewById(R.id.textViewUsername)
+        private val tvStatus: TextView = itemView.findViewById(R.id.textViewStatus)
+        private val tvSizeDownloaded: TextView = itemView.findViewById(R.id.textViewSizeDownloaded)
+        private val tvSizeUploaded: TextView = itemView.findViewById(R.id.textViewSizeUpload)
+        private val tvSize: TextView = itemView.findViewById(R.id.textViewSize)
+        private val tvUnit: TextView = itemView.findViewById(R.id.textViewSizeUnit)
+        private val tvPercentage: TextView = itemView.findViewById(R.id.textViewPercentage)
+        private val tvSpeedDownload: TextView = itemView.findViewById(R.id.textViewSpeedDownload)
+        private val tvSpeedUpload: TextView = itemView.findViewById(R.id.textViewSpeedUpload)
+        private val tvSpeedUnit: TextView = itemView.findViewById(R.id.textViewSpeedUnit)
+        private val bPlay: ImageButton = itemView.findViewById(R.id.buttonPlay)
+        private val bPause: ImageButton = itemView.findViewById(R.id.buttonPause)
+        private val bDelete: ImageButton = itemView.findViewById(R.id.buttonDelete)
 
-        val pbDownload = itemView.findViewById<ProgressBar>(R.id.progressBarDownload)
+        private val pbDownload: ProgressBar = itemView.findViewById(R.id.progressBarDownload)
 
         fun bind(dl: Download) {
             val id = dl.id
